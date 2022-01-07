@@ -1,0 +1,172 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+    <title>SmartRide - Questions for Driver</title>
+ <!-- Custom fonts for this template-->
+    <link href="{% static 'vendor/fontawesome-free/css/all.min.css' %}" rel="stylesheet" type="text/css">
+    <!-- <link href="{% static 'css/mapStyle.css' %}" rel="stylesheet" type="text/css"> -->
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+
+    <!-- Custom styles for this template-->
+    <link href="{% static 'css/sb-admin-2.css' %}" rel="stylesheet">
+
+     <style>
+        .img-container {
+          text-align: center;
+          display: block;
+          position: relative;
+          top: 10%;
+        }
+        .mapBox{
+          margin-top:10%;
+          margin-left:auto;
+          margin-right: auto;
+          width:60%;
+          height:60%;
+          display: block;
+          border-radius: 6%;
+        }
+      </style>
+      <style>
+        /* Always set the map height explicitly to define the size of the div
+         * element that contains the map. */
+        #map-canvas{
+          height: 80%;
+          width: 80%;
+        }
+      </style>
+      <!-- <script src="{% static 'js/mapSearch.js' %}"></script> -->
+      <script src="{% static 'js/getLocate.js' %}"></script>
+      <script src="{% static 'js/utility.js' %}"></script>
+      <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCG-rWicPLs2VaZF3WDK6yyl7tQqh-kUUc &libraries=places&callback=initMap"></script>
+      <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
+       <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+
+  <!-- Core plugin JavaScript-->
+  <script src="{% static 'vendor/jquery-easing/jquery.easing.min.js' %}"></script>
+
+</head>
+<body>
+<div class="container">
+    <!-- Outer Row -->
+    <div class="row justify-content-center">
+      <div class="col-xl-10 col-lg-12 col-md-9">
+        <div class="card o-hidden border-0 shadow-lg my-5">
+          <div class="card-body p-0">
+            <!-- Nested Row within Card Body -->
+            <div class="row" style="background-color: rgb(224, 240, 250);">
+              <div class="col-lg-12">
+                <div class="p-5">
+                    <div class="text-center">
+                        <h1 class="h4 text-gray-900 mb-4">Who can be your unknown rider in the car</h1>
+                   </div>
+                     <form action="{% url 'driver:driverAnswer' %}" name = "driverAnswer" method = "post" class= "driver">
+                    {% csrf_token %}
+                         {{ form.as_p }}
+                    <div class="form-group">
+                       <label>1) Do you prefer talkative rider?</label><br>
+                      <input type="radio" id="yes" name="talkative" value="Yes">
+                      <label for="yes"> Yes</label><br>
+
+                      <input type="radio" id="no" name="talkative" value="No">
+                      <label for="no">No</label><br>
+
+                      <input type="radio" id="any" name="talkative" value="Any">
+                      <label for="any">Any</label><br><br>
+
+                      <label>2) Do you prefer on time driving?</label><br>
+                      <input type="radio" id="yes" name="timedriving" value="Yes">
+                      <label for="yes"> Yes</label><br>
+
+                      <input type="radio" id="no" name="timedriving" value="No">
+                      <label for="no">No</label><br>
+
+                      <input type="radio" id="any" name="timedriving" value="Any">
+                      <label for="any">Any</label><br><br>
+
+                     <label>3) Do you like music while travelling?</label><br>
+                      <input type="radio" id="yes" name="music" value="Yes">
+                      <label for="yes"> Yes</label><br>
+
+                      <input type="radio" id="no" name="music" value="No">
+                      <label for="no">No</label><br>
+
+                      <input type="radio" id="any" name="music" value="Any">
+                      <label for="any">Any</label><br><br>
+
+                      <label>4) Do you prefer only male?</label><br>
+                      <input type="radio" id="yes" name="male" value="Yes">
+                      <label for="yes"> Yes</label><br>
+
+                      <input type="radio" id="no" name="male" value="No">
+                      <label for="no">No</label><br>
+
+                      <input type="radio" id="any" name="male" value="Any">
+                      <label for="any">Any</label><br><br>
+
+                      <label>5) Do you prefer only female?</label><br>
+                      <input type="radio" id="yes" name="female" value="Yes">
+                      <label for="yes"> Yes</label><br>
+
+                      <input type="radio" id="no" name="female" value="No">
+                      <label for="no">No</label><br>
+
+                      <input type="radio" id="any" name="female" value="Any">
+                      <label for="any">Any</label><br><br>
+
+                      <label>6) Do you prefer working person, or Students as a rider would be fine?</label><br>
+                      <input type="radio" id="yes" name="workstudent" value="Yes">
+                      <label for="yes"> Yes</label><br>
+
+                      <input type="radio" id="no" name="workstudent" value="No">
+                      <label for="no">No</label><br>
+
+                      <input type="radio" id="any" name="workstudent" value="Any">
+                      <label for="any">Any</label><br><br>
+
+                       <input type="submit" class="btn btn-primary btn-user btn-block" value="Submit"><br>
+
+                        <b style="margin-left: 46%;">OR</b><br><br>
+
+                        <a href="{% url 'driver:driverHome' %}" class="btn btn-primary btn-user btn-block">
+                            Skip
+                        </a>
+                        {% if message %}
+                            {% for message in message %}
+                                {{ message }}
+                            {% endfor %}
+                        {% endif %}
+                       <input type="hidden" id="lat" name="latVal">
+                       <input type="hidden" id="lng" name="lngVal">
+                       <input type="hidden" id = "userId" name = "userId" value = {{username}}>
+                    </div>
+                         <hr>
+                  </form>
+                  </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div id="map-canvas"></div>
+      </div>
+    </div>
+  </div>
+
+<!-- Bootstrap core JavaScript-->
+  <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
+  <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+
+  <!-- Core plugin JavaScript-->
+  <script src="{% static 'vendor/jquery-easing/jquery.easing.min.js' %}"></script>
+
+  <!-- Custom scripts for all pages-->
+  <script src="{% static 'js/sb-admin-2.min.js' %}"></script>
+
+</body>
+</html>
